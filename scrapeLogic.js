@@ -1,5 +1,16 @@
-const puppeteer = require("puppeteer");
 require("dotenv").config();
+
+let chrome = {};
+let puppeteer;
+
+//puppeteer-core@6.0.0
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  chrome = require("chrome-aws-lambda");
+  puppeteer = require("puppeteer-core");
+} else {
+  puppeteer = require("puppeteer");
+}
 
 const scrapeLogic = async (res) => {
   const html = `
@@ -16,23 +27,23 @@ const scrapeLogic = async (res) => {
 </html>
     `;
 
-  //   const browser = await puppeteer.launch();
+  let options = {};
 
-  const browser = await puppeteer.launch({
-    args: [
-      "--disable-setuid-sandbox",
-      "--no-sandbox",
-      "--single-process",
-      "--no-zygote",
-    ],
-    executablePath:
-      process.env.NODE_ENV === "production"
-        ? process.env.PUPPETEER_EXECUTABLE_PATH
-        : puppeteer.executablePath(),
-  });
+  if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    options = {
+      args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+      defaultViewport: chrome.defaultViewport,
+      executablePath: await chrome.executablePath,
+      headless: true,
+      ignoreHTTPSErrors: true,
+    };
+  }
 
   try {
+    let browser = await puppeteer.launch(options);
+
     const page = await browser.newPage();
+
     await page.setContent(html);
 
     const pdf = await page.pdf({
@@ -40,14 +51,47 @@ const scrapeLogic = async (res) => {
       printBackground: true,
     });
 
-    console.log(pdf);
-    await browser.close();
+    // let page = await browser.newPage();
+    // await page.goto("https://www.google.com");
 
-    res.send("ok");
-  } catch (e) {
-    console.error(e);
-    res.send(`Something went wrong while running Puppeteer: ${e}`);
+    res.json({ message: "pdf create", pdf });
+  } catch (err) {
+    console.error(err);
+    return null;
   }
+
+  //   //   const browser = await puppeteer.launch();
+
+  //   const browser = await puppeteer.launch({
+  //     args: [
+  //       "--disable-setuid-sandbox",
+  //       "--no-sandbox",
+  //       "--single-process",
+  //       "--no-zygote",
+  //     ],
+  //     executablePath:
+  //       process.env.NODE_ENV === "production"
+  //         ? process.env.PUPPETEER_EXECUTABLE_PATH
+  //         : puppeteer.executablePath(),
+  //   });
+
+  //   try {
+  //     const page = await browser.newPage();
+  //     await page.setContent(html);
+
+  //     const pdf = await page.pdf({
+  //       format: "a4",
+  //       printBackground: true,
+  //     });
+
+  //     console.log(pdf);
+  //     await browser.close();
+
+  //     res.send("ok");
+  //   } catch (e) {
+  //     console.error(e);
+  //     res.send(`Something went wrong while running Puppeteer: ${e}`);
+  //   }
 };
 
 module.exports = { scrapeLogic };
