@@ -1,8 +1,11 @@
-require("dotenv").config();
-const chrome = require("chrome-aws-lambda");
-const puppeteer = require("puppeteer-core");
+import { config } from "dotenv";
 
-const scrapeLogic = async (res) => {
+config();
+
+import chrome from "chrome-aws-lambda";
+import puppeteer from "puppeteer-core";
+
+export const scrapeLogic = async (res) => {
   let options = {
     args: [
       "--disable-setuid-sandbox",
@@ -73,5 +76,3 @@ const scrapeLogic = async (res) => {
   //     res.send(`Something went wrong while running Puppeteer: ${e}`);
   //   }
 };
-
-module.exports = { scrapeLogic };
