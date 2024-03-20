@@ -6,6 +6,21 @@ import chrome from "chrome-aws-lambda";
 import puppeteer from "puppeteer-core";
 
 export const scrapeLogic = async (res) => {
+  const html = `
+  <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test html pdf</title>
+  </head>
+  <body>
+    <h1>This is Test Html PDF</h1>
+  </body>
+</html>
+
+  
+  `;
   let options = {
     args: [
       "--disable-setuid-sandbox",
@@ -15,8 +30,8 @@ export const scrapeLogic = async (res) => {
     ],
     executablePath:
       process.env.NODE_ENV === "production"
-        ? process.env.PUPPETEER_EXECUTABLE_PATH
-        : await chrome.executablePath(),
+        ? await chrome.executablePath()
+        : process.env.PUPPETEER_EXECUTABLE_PATH,
     headless: true,
     ignoreHTTPSErrors: true,
   };
