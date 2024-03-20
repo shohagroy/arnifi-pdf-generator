@@ -40,7 +40,7 @@ const generatePdf = async (htmlContent, res) => {
       displayHeaderFooter: true,
       headerTemplate: `<div></div>`,
       footerTemplate: `
-      <div style="font-size: 14px; text-align: right; width: 100%; padding-right: 20px;">
+      <div style="font-family:inter, Arial, Helvetica, sans-serif; font-size: 14px; text-align: right; width: 100%; padding-right: 20px;">
       <span class="pageNumber"></span> of <span class="totalPages"></span>
       </div>`,
     });
