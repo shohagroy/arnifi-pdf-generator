@@ -5,9 +5,9 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-app.get("/scrape", (req, res) => {
-  scrapeLogic(res);
-});
+// app.get("/scrape", (req, res) => {
+//   scrapeLogic(res);
+// });
 
 app.get("/generate-pdf", (req, res) => {
   generatePdf(res);
