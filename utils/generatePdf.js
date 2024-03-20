@@ -13,7 +13,7 @@ const generatePdf = async (res) => {
         "--single-process",
         "--no-zygote",
       ],
-      executablePath: config.PUPPETEER_EXECUTABLE_PATH,
+      executablePath: envConfig.PUPPETEER_EXECUTABLE_PATH,
       headless: true,
       ignoreHTTPSErrors: true,
     });

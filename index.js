@@ -14,7 +14,7 @@ app.get("/generate-pdf", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Render Puppeteer server is up and running!");
+  res.send("Arnifi - PDf Generator API v1.0.0");
 });
 
 app.listen(PORT, () => {
