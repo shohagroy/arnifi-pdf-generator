@@ -1,16 +1,24 @@
 import express from "express";
-import { scrapeLogic } from "./scrapeLogic.js";
+import cors from "cors";
 import generatePdf from "./utils/generatePdf.js";
 const app = express();
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
+  })
+);
 
-const PORT = process.env.PORT || 5000;
+app.use(express.json({ limit: "50mb" }));
 
-// app.get("/scrape", (req, res) => {
-//   scrapeLogic(res);
-// });
+const PORT = process.env.PORT || 4000;
 
-app.get("/generate-pdf", (req, res) => {
-  generatePdf(res);
+app.post("/api/generate-pdf", (req, res) => {
+  const { template } = req.body;
+  generatePdf(template, res);
 });
 
 app.get("/", (req, res) => {
