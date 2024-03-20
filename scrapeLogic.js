@@ -1,5 +1,4 @@
 import { config } from "dotenv";
-
 config();
 
 import chrome from "chrome-aws-lambda";
@@ -18,8 +17,6 @@ export const scrapeLogic = async (res) => {
     <h1>This is Test Html PDF</h1>
   </body>
 </html>
-
-  
   `;
   let options = {
     args: [

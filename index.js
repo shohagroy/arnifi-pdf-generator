@@ -1,12 +1,16 @@
 import express from "express";
 import { scrapeLogic } from "./scrapeLogic.js";
+import generatePdf from "./utils/generatePdf.js";
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 
 app.get("/scrape", (req, res) => {
-  console.log("api call");
   scrapeLogic(res);
+});
+
+app.get("/generate-pdf", (req, res) => {
+  generatePdf(res);
 });
 
 app.get("/", (req, res) => {
