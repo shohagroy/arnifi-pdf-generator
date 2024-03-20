@@ -5,6 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.get("/scrape", (req, res) => {
+  console.log("api call");
   scrapeLogic(res);
 });
 

@@ -13,6 +13,7 @@ if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
 }
 
 const scrapeLogic = async (res) => {
+  console.log("scrapeLogic run");
   const html = `
     <!DOCTYPE html>
 <html lang="en">
@@ -40,16 +41,21 @@ const scrapeLogic = async (res) => {
   }
 
   try {
+    console.log("launching puppeteer");
     let browser = await puppeteer.launch(options);
 
+    console.log("browser created");
     const page = await browser.newPage();
 
     await page.setContent(html);
 
+    console.log("page loaded");
     const pdf = await page.pdf({
       format: "a4",
       printBackground: true,
     });
+
+    console.log("pdf created");
 
     // let page = await browser.newPage();
     // await page.goto("https://www.google.com");
