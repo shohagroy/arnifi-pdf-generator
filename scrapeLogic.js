@@ -6,9 +6,11 @@ let puppeteer;
 //puppeteer-core@6.0.0
 
 if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  console.log("running on lambda");
   chrome = require("chrome-aws-lambda");
   puppeteer = require("puppeteer-core");
 } else {
+  console.log("running on local");
   puppeteer = require("puppeteer");
 }
 
@@ -31,6 +33,7 @@ const scrapeLogic = async (res) => {
   let options = {};
 
   if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    console.log("running on lambda");
     options = {
       args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
       defaultViewport: chrome.defaultViewport,
